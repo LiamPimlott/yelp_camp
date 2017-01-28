@@ -29,24 +29,24 @@ function seedDB(){
             data.forEach(function(seed){
                 Campground.create(seed, function(err, campground){
                     if(err){
-                       console.log(err);
+                      console.log(err);
                     } else {
-                       console.log("Added Campground.");
-                       //Create a Comment
-                       Comment.create(
-                           {
-                               text: "TEST TEST THIS IS A TEST COMMENT",
-                               author: "yo mama"
-                           }, function(err, comment){
-                               if(err){
-                                   console.log("Err")
-                               } else {
-                                   campground.comments.push(comment);
-                                   campground.save();
-                                   console.log("New comment added")
-                               }
-                           }
-                           )
+                      console.log("Added Campground.");
+                      //Create a Comment
+                      Comment.create(
+                          {
+                              text: "TEST TEST THIS IS A TEST COMMENT",
+                              author: "yo mama"
+                          }, function(err, comment){
+                              if(err){
+                                  console.log("Err")
+                              } else {
+                                  campground.comments.push(comment);
+                                  campground.save();
+                                  console.log("New comment added")
+                              }
+                          }
+                          )
                     }
                 });
             });

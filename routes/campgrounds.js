@@ -31,17 +31,22 @@ router.get("/new", isLoggedIn, function(req, res){
 });
 
 //CREATE -
-router.post("/", function(req, res){
+router.post("/", isLoggedIn, function(req, res){
    //get data from form and add to camground array
-   var text = req.body.name;
-   var image = req.body.image;
-   var description = req.body.description;
-   var newCampground = {name: text, image:image, description: description};
-   Campground.create(newCampground, function(err, newCampground){
+    var text = req.body.name;
+    var image = req.body.image;
+    var description = req.body.description;
+    var newCampground = {name: text, image:image, description: description};
+    Campground.create(newCampground, function(err, newCampground){
         if(err){
             console.log(err)
         } else {
-           res.redirect("/");
+            //connect new comment to current user
+            newCampground.author.id = req.user._id;
+            newCampground.author.username = req.user.username;
+            newCampground.save();
+            console.log(newCampground);
+            res.redirect("/campgrounds");
         }
     });
 });

@@ -24,7 +24,7 @@ var Comment = require("./models/comment");
 var User = require("./models/user");
 
 // SEEDING DATABASE
-seedDB();
+//seedDB();
 
 // APP CONFIG
 mongoose.connect("mongodb://localhost/yelp_camp");
