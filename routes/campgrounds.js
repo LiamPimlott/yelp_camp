@@ -64,6 +64,29 @@ router.get("/:id", function(req, res) {
     //res.send("THIS WILL BE THE SHOW PAGE ONE DAY")
 });
 
+// EDIT
+router.get("/:id/edit", isLoggedIn, isAuthor, function(req, res) {
+    Campground.findById(req.params.id).populate("comments").exec(function(err, found){
+        if(err){
+            console.log(err);
+            res.redirect("/campgrounds");
+        } else {
+            res.render("campgrounds/edit", {campground: found});
+        }
+    }); 
+});
+
+// UPDATE
+router.put("/:id",isLoggedIn, isAuthor, function(req, res){
+        Campground.findByIdAndUpdate(req.params.id, req.body.campground, function(err, updatedCampground){
+        if(err){
+            res.redirect("/");
+        } else {
+            res.redirect("/campgrounds/"+req.params.id);
+        }
+    });
+});
+
 // AUTH MIDDLEWARE
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
@@ -71,6 +94,20 @@ function isLoggedIn(req, res, next){
     } else {
         res.redirect("/login");
     }
+}
+
+function isAuthor(req, res, next){
+     Campground.findById(req.params.id, function(err, campground){
+         if(err){
+             console.log(err);
+         } else {
+             if(req.user._id = campground.author.id){
+                 return next();
+             } else {
+                 res.redirect("/login");
+             }
+         }
+     })
 }
 
 // EXPORT

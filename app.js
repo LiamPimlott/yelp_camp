@@ -12,6 +12,8 @@ var mongoose = require("mongoose");
 var seedDB = require("./seeds");
 var passport = require("passport");
 var LocalStrategy = require("passport-local");
+// Allows Express to use .put
+var methodOverride = require("method-override");
 
 // REQUIRING ROUTES
 var commentRoutes = require("./routes/comments"),
@@ -31,6 +33,7 @@ mongoose.connect("mongodb://localhost/yelp_camp");
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
+app.use(methodOverride("_method"));
 
 // PASSPORT CONFIG
 app.use(require("express-session")({
