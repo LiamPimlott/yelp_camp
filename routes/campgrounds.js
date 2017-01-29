@@ -87,6 +87,16 @@ router.put("/:id",isLoggedIn, isAuthor, function(req, res){
     });
 });
 
+// DESTROY
+router.delete("/:id", isLoggedIn, isAuthor, function(req, res){
+    Campground.findByIdAndRemove(req.params.id, function(err){
+        if(err){
+            console.log(err);
+        } 
+        res.redirect("/campgrounds");
+    })
+})
+
 // AUTH MIDDLEWARE
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
@@ -101,10 +111,10 @@ function isAuthor(req, res, next){
          if(err){
              console.log(err);
          } else {
-             if(req.user._id = campground.author.id){
+             if(campground.author.id.equals(req.user._id)){
                  return next();
              } else {
-                 res.redirect("/login");
+                 res.redirect("/login ");
              }
          }
      })

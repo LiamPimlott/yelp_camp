@@ -20,8 +20,11 @@
                     <p>
                        <em>Submitted by <%=campground.author.username%></em>
                     </p>
-                    <% if((currentUser) && (currentUser._id = campground.author.id)){ %>
+                    <% if((currentUser) && (campground.author.id.equals(currentUser._id))){ %>
                         <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit Post</a>
+                        <form id="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+                            <button class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete Post</button>
+                        </form>
                     <% } %>
                 </div>
             </div>
