@@ -14,6 +14,7 @@ var passport = require("passport");
 var LocalStrategy = require("passport-local");
 // Allows Express to use .put
 var methodOverride = require("method-override");
+var flash = require("connect-flash");
 
 // REQUIRING ROUTES
 var commentRoutes = require("./routes/comments"),
@@ -34,6 +35,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + "/public"));
 app.set("view engine", "ejs");
 app.use(methodOverride("_method"));
+app.use(flash());
 
 // PASSPORT CONFIG
 app.use(require("express-session")({
@@ -51,6 +53,8 @@ passport.deserializeUser(User.deserializeUser());
 //Passing current user to every route.
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
+    res.locals.error = req.flash("error");
+    res.locals.success = req.flash("success");
     next();
 });
 

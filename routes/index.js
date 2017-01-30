@@ -2,6 +2,7 @@
 var express = require("express");
 var router = express.Router();
 var passport = require("passport");
+var middleware = require("../middleware");
 
 // DATA MODELS
 var Campground = require("../models/campground"),
@@ -32,9 +33,11 @@ router.post("/register", function(req, res) {
     User.register(newUser, req.body.password, function(err, user){
         if(err){
             console.log(err);
-            return res.render("register");
+            req.flash("error", err.message);
+            res.redirect("/register");
         } 
         passport.authenticate("local")(req, res, function(){
+            req.flash("success", "Succesfully Registered, Welcome!");
             res.redirect("/campgrounds");
         })
     })
@@ -55,19 +58,11 @@ router.post("/login", passport.authenticate("local",
 });
 
 // Logout route
-router.get("/logout", function(req, res) {
+router.get("/logout", middleware.isLoggedIn, function(req, res) {
     req.logout();
+    req.flash("success", "Succesfuly logged out");
     res.redirect("/");
 });
-
-// AUTH MIDDLEWARE
-function isLoggedIn(req, res, next){
-    if(req.isAuthenticated()){
-        return next();
-    } else {
-        res.redirect("/login");
-    }
-}
 
 // EXPORT
 module.exports = router;

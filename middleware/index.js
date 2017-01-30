@@ -13,6 +13,7 @@ middlewareObj.isLoggedIn = function(req, res, next){
     if(req.isAuthenticated()){
         return next();
     } else {
+        req.flash("error", "Please Log in First!");
         res.redirect("/login");
     }
 }
@@ -25,6 +26,7 @@ middlewareObj.isAuthorCampground = function(req, res, next){
              if(campground.author.id.equals(req.user._id)){
                  return next();
              } else {
+                    req.flash("error", "Please Log in First!");
                  res.redirect("/login ");
              }
          }
@@ -39,6 +41,7 @@ middlewareObj.isAuthorComment = function(req, res, next){
              if(comment.author.id.equals(req.user._id)){
                  return next();
              } else {
+                 req.flash("error", "Please Log in First!");
                  res.redirect("/login ");
              }
          }
