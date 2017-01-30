@@ -51,6 +51,43 @@ router.post("/", isLoggedIn, function(req, res){
     });
 });
 
+
+// EDIT
+router.get("/:comment_id/edit", isLoggedIn, isAuthor, function(req, res) {
+    Comment.findById(req.params.comment_id, function(err, found){
+        if(err){
+            console.log(err);
+            res.redirect("/campgrounds");
+        } else {
+            res.render("comments/edit", {comment: found, campgroundId: req.params.id});
+        }
+    }); 
+});
+
+// UPDATE
+router.put("/:comment_id",isLoggedIn, isAuthor, function(req, res){
+        Comment.findByIdAndUpdate(req.params.comment_id, req.body.comment, function(err, updatedComment){
+        if(err){
+            console.log(err);
+            res.redirect("/");
+        } else {
+            res.redirect("/campgrounds/"+req.params.id);
+        }
+    });
+});
+
+// DESTROY
+router.delete("/:comment_id", isLoggedIn, isAuthor, function(req, res){
+     Comment.findByIdAndRemove(req.params.comment_id, function(err){
+        if(err){
+            console.log(err);
+        } 
+        
+        res.redirect("/campgrounds/"+req.params.id);
+    });
+});
+
+
 // AUTH MIDDLEWARE
 function isLoggedIn(req, res, next){
     if(req.isAuthenticated()){
@@ -58,6 +95,20 @@ function isLoggedIn(req, res, next){
     } else {
         res.redirect("/login");
     }
+}
+
+function isAuthor(req, res, next){
+     Comment.findById(req.params.comment_id, function(err, comment){
+         if(err){
+             console.log(err);
+         } else {
+             if(comment.author.id.equals(req.user._id)){
+                 return next();
+             } else {
+                 res.redirect("/login ");
+             }
+         }
+     })
 }
 
 // EXPORT

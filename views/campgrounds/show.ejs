@@ -22,7 +22,7 @@
                     </p>
                     <% if((currentUser) && (campground.author.id.equals(currentUser._id))){ %>
                         <a class="btn btn-warning" href="/campgrounds/<%= campground._id %>/edit">Edit Post</a>
-                        <form id="delete-form" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
+                        <form class="pull-right" action="/campgrounds/<%= campground._id %>?_method=DELETE" method="POST">
                             <button class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete Post</button>
                         </form>
                     <% } %>
@@ -30,8 +30,9 @@
             </div>
             <!--COMMENTS-->
             <div class="well">
-                <div class="text-right">
-                    <a class="btn btn-success" href="/campgrounds/<%=campground.id%>/comments/new">New Comment</a>
+                <div>
+                    <h3 id="comments-header">Comments</h3>
+                    <a class="btn btn-success pull-right" href="/campgrounds/<%=campground.id%>/comments/new">New Comment</a>
                 </div>
                 <hr>
                 <% campground.comments.forEach(function(comment){ %>
@@ -40,6 +41,14 @@
                            <strong><%= comment.author.username %></strong>
                            <span class="pull-right">10 days ago</span>
                            <p><%= comment.text %></p>
+                            <% if((currentUser) && (comment.author.id.equals(currentUser._id))){ %>
+                                <div class="pull-right">
+                                    <a class href="/campgrounds/<%= campground._id %>/comments/<%=comment._id%>/edit"><i class="glyphicon glyphicon-cog"></i> Edit</a>
+                                    <form id="delete-form" action="/campgrounds/<%= campground._id %>/comments/<%=comment._id%>?_method=DELETE" method="POST">
+                                        <button class="btn btn-link"><i class="glyphicon glyphicon-trash"></i> Delete</button>
+                                    </form>
+                                </div>
+                            <% } %>
                        </div>
                    </div>
                 <% });%>

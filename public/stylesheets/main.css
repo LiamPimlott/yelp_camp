@@ -12,5 +12,10 @@
 
 #delete-form {
     display:inline;
-    float:right;
 }
+
+#comments-header {
+    display:inline-block;
+}
+
+
