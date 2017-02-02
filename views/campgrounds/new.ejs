@@ -6,19 +6,26 @@
         <div style="width: 30%; margin: 25px auto;">
             <form action="/campgrounds" method="POST">
                  <div class="form-group">
+                     <label>Campground Name</label>
                      <input class="form-control" type="text" name="name" placeholder="name">
                  </div>
                  <div class="form-group">
-                     <input class="form-control" type="text" name="image" placeholder="image url">
+                     <label>Image URL</label>
+                     <input class="form-control" type="text" name="image" placeholder="url">
                  </div>
                  <div class="form-group">
+                     <label>Description</label>
                      <input class="form-control" type="text" name="description" placeholder="description">
+                 </div>
+                 <div class="form-group">
+                     <label>Price per night</label>
+                     <input class="form-control" type="number" max="1000" min="0.1" name="price" placeholder="price">
                  </div>
                  <div class="form-group">
                      <button class="btn btn-lg btn-default btn-block">Submit</button>
                  </div>        
             </form>
-            <a href="/index">Go Back</a>
+            <a href="/campgrounds">Go Back</a>
         </div>
     </div>
 </div>
